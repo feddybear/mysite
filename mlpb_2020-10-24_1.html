@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="css/uptheme.css" type="text/css" />
+<title>Supervised Learning Problem</title>
+<!-- MathJax -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+	  TeX: { extensions: ["TeX/AMSmath.js"], equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+<!-- End MathJax -->
+</head>
+<body>
+<div id="fwtitle">
+<div id="toptitle">
+<h1>Supervised Learning Problem</h1>
+<div id="subtitle">From Stanford's CS 229</div>
+</div>
+</div>
+<div id="tlayout">
+<div id="bbmenustart">
+<div id="layout-menu">
+<div id="menu-inner">
+<div class="menu-category">Federico Ang</div>
+<div class="menu-item"><a href="index.html">Home</a></div>
+<div class="menu-item"><a href="blog.html">Blog</a></div>
+<div class="menu-category">Problem Bank</div>
+<div class="menu-item"><a href="mlpb.html" class="current">Machine&nbsp;Learning</a></div>
+<div class="menu-item"><a href="pspb.html">Probability&nbsp;and&nbsp;Statistics</a></div>
+<div class="menu-category">External Links</div>
+<div class="menu-item"><a href="https://www.youtube.com" target="blank">YouTube&nbsp;Channel&nbsp;(maybe!)</a></div>
+</div>
+</div>
+<div id="layout-content">
+<div id="inner">
+<p><a href="mlpb.html" target=&ldquo;blank&rdquo;>Back to top</a></p>
+<h2>Newton's method for computing least squares</h2>
+<p>In this problem, we will prove that if we use Newton's method to solve for the least squares optimization problem,
+we only need one iteration to converge to \(\theta^*\).</p>
+<ul>
+<li><p>Find the Hessian of the cost function \(J(\theta)=\frac{1}{2}\sum_{i=1}^m{\left(\theta^Tx^{(i)}-y^{(i)}\right)}^2\)</p>
+</li>
+</ul>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong></p></li></ul></p>
+<p style="text-align:center">
+\[
+\newcommand{\pd}{\partial}
+	\begin{eqnarray*}
+	  H_{kl}=\frac{\pd^2J(\theta)}{\pd\theta_k\pd\theta_l}&amp;=&amp;\frac{\pd^2}{\pd\theta_k\pd\theta_l}{\frac{1}{2}\sum_{i=1}^m{\left(\theta^Tx^{(i)}-y^{(i)}\right)}^2}\\
+                &amp;=&amp;{\frac{1}{2}\frac{\pd^2}{\pd\theta_k\pd\theta_l}\sum_{i=1}^m{\left(\sum_{j=1}^n\theta_jx_j^{(i)}-y^{(i)}\right)}^2}\\
+                &amp;=&amp;{\frac{\pd}{\pd\theta_l}\sum_{i=1}^m{\left(\sum_{j=1}^n\theta_jx_j^{(i)}-y^{(i)}\right)}x_k^{(i)}}\\
+          H_{kl}=\frac{\pd^2J(\theta)}{\pd\theta_k\pd\theta_l}&amp;=&amp;\sum_{i=1}^mx_k^{(i)}x_l^{(i)}
+	\end{eqnarray*}
+\]
+</p><p><ul style="list-style-type: none";>
+<li>
+<p>
+Letting \(X=[x^{(1)}~x^{(2)}~\cdots~x^{(m)}]^T\), in vectorized form we have:
+</p>
+</li>
+</ul></p>
+<p style="text-align:center">
+\[
+\boxed{H=X^TX}
+\]
+</p><ul>
+<li><p>Show that the first iteration of Newton's method gives us \(\theta^*=(X^TX)^{-1}X^T\vec{y}\), the solution to our least squares problem.</p>
+</li>
+</ul>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong></p></li></ul></p>
+<p style="text-align:center">
+\[
+	\begin{eqnarray*}
+	  \theta_{t+1}&amp;=&amp;\theta_t-H^{-1}\nabla_{\theta_t} J(\theta_t)\\
+                      &amp;=&amp;\theta_t-(X^TX)^{-1} \left( X^TX\theta_t-X^T\vec{y} \right)\\
+                      &amp;=&amp;\theta_t-I\theta_t+(X^TX)^{-1}X^T\vec{y}\\
+              \theta^*&amp;=&amp;(X^TX)^{-1}X^T\vec{y}
+	\end{eqnarray*}
+\]
+</p><p><a href="mlpb_2020-10-24_2.html" target=&ldquo;blank&rdquo;>Next problem</a></p>
+</td>
+</tr>
+</table>
+</body>
+</html>

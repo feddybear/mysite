@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="css/uptheme.css" type="text/css" />
+<title>Supervised Learning Problem</title>
+<!-- MathJax -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+	  TeX: { extensions: ["TeX/AMSmath.js"], equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+<!-- End MathJax -->
+</head>
+<body>
+<div id="fwtitle">
+<div id="toptitle">
+<h1>Supervised Learning Problem</h1>
+<div id="subtitle">From Stanford's CS 229</div>
+</div>
+</div>
+<div id="tlayout">
+<div id="bbmenustart">
+<div id="layout-menu">
+<div id="menu-inner">
+<div class="menu-category">Federico Ang</div>
+<div class="menu-item"><a href="index.html">Home</a></div>
+<div class="menu-item"><a href="blog.html">Blog</a></div>
+<div class="menu-category">Problem Bank</div>
+<div class="menu-item"><a href="mlpb.html" class="current">Machine&nbsp;Learning</a></div>
+<div class="menu-item"><a href="pspb.html">Probability&nbsp;and&nbsp;Statistics</a></div>
+<div class="menu-category">External Links</div>
+<div class="menu-item"><a href="https://www.youtube.com" target="blank">YouTube&nbsp;Channel&nbsp;(maybe!)</a></div>
+</div>
+</div>
+<div id="layout-content">
+<div id="inner">
+<p><a href="mlpb.html" target=&ldquo;blank&rdquo;>Back to top</a></p>
+<h2>Locally-weighted logistic regression</h2>
+<p>In this problem you will implement a locally-weighted version of logistic regression,
+where we weight different training examples differently according to the query point.
+The locally-weighted logistic regression problem (with regularization parameter, \(\lambda\)) is to maximize</p>
+<p style="text-align:center">
+\[
+      \ell(\theta)=-\frac{\lambda}{2}\theta^T\theta+\sum_{i=1}^mw^{(i)}\left[y^{(i)}\log h_\theta(x^{(i)})+(1-y^{(i)})\log(1-h_\theta(x^{(i)}))\right]
+  \]
+</p><p>where</p>
+<p style="text-align:center">
+\[
+      h_\theta(x^{(i)})=g(\theta^Tx^{(i)})=\frac{1}{1+e^{-\theta^Tx^{(i)}}}
+  \]
+</p><p>Using this definition, the gradient of \(\ell(\theta)\) can be derived:</p>
+<p style="text-align:center">
+\[
+  \newcommand{\pd}{\partial}
+  \begin{eqnarray*}
+    \frac{\pd\ell(\theta)}{\pd\theta_k}&amp;=&amp;-\frac{\lambda}{2}\frac{\pd}{\pd\theta_k}{\sum_{j=1}^n\theta_j^2}+
+  \sum_{i=1}^mw^{(i)}\left[y^{(i)}\frac{\pd}{\pd\theta_k}{\log h_\theta(x^{(i)})+
+                            (1-y^{(i)})\frac{\pd}{\pd\theta_k}\log{(1-h_\theta(x^{(i)}))}}\right]\\
+  &amp;=&amp;-\frac{\lambda}{2}(2\theta_k)+\sum_{i=1}^mw^{(i)}\left[\frac{y^{(i)}}{g(\theta^Tx^{(i)})}-\frac{1-y^{(i)}}{1-g(\theta^Tx^{(i)})}\right]
+                            \frac{\pd}{\pd\theta_k}{g(\theta^Tx^{(i)})}\\
+  &amp;=&amp;-\lambda\theta_k+\sum_{i=1}^mw^{(i)}\left[\frac{y^{(i)}}{g(\theta^Tx^{(i)})}+\frac{y^{(i)}-1}{1-g(\theta^Tx^{(i)})}\right]
+                            g(\theta^Tx^{(i)})(1-g(\theta^Tx^{(i)}))\frac{\pd}{\pd\theta_k}{\theta^Tx^{(i)}}\\
+      &amp;=&amp;\sum_{i=1}^mw^{(i)}[y^{(i)}(1-g(\theta^Tx^{(i)}))-(1-y^{(i)})g(\theta^Tx^{(i)})]x_k^{(i)}-\lambda\theta_k\\
+      &amp;=&amp;\sum_{i=1}^mw^{(i)}(y^{(i)}-h_\theta(x^{(i)}))x_k^{(i)}-\lambda\theta_k
+  \end{eqnarray*}
+  \]
+</p><p>Thus,</p>
+<p style="text-align:center">
+\[
+    \nabla_\theta\ell(\theta)=X^Tz-\lambda\theta
+  \]
+</p><p>where \(z\in\mathbb{R}^m\) is defined by</p>
+<p style="text-align:center">
+\[
+    z_i=w^{(i)}(y^{(i)}-h_\theta(x^{(i)}))
+  \]
+</p><p>The Hessian follows from the derivation of the gradient</p>
+<p style="text-align:center">
+\[
+  \begin{eqnarray*}
+    H_{kl}=\frac{\pd^2\ell(\theta)}{\pd\theta_k\pd\theta_l}&amp;=&amp;\frac{\pd}{\pd\theta_l}\sum_{i=1}^mw^{(i)}(y^{(i)}-h_\theta(x^{(i)}))x_k^{(i)}-\lambda\theta_k\\
+  &amp;=&amp;-\sum_{i=1}^mw^{(i)}h_\theta(x^{(i)})(1-h_\theta(x^{(i)}))x_k^{(i)}x_l^{(i)}+
+   \left\{\begin{array}{rl}
+    -\lambda &amp; k=l\\
+          0 &amp; k\neq l
+   \end{array}\right.
+  \end{eqnarray*}
+  \]
+</p><p>and so it is given by</p>
+<p style="text-align:center">
+\[
+    H=X^TDX-\lambda I
+  \]
+</p><p>where \(D\in\mathbb{R}^{m\times m}\) is a diagonal matrix with</p>
+<p style="text-align:center">
+\[
+    D_{ii}=-w^{(i)}h_\theta(x^{(i)})(1-h_\theta(x^{(i)}))
+  \]
+</p><p>Given a query point \(x\), we choose to compute the weights</p>
+<p style="text-align:center">
+\[
+    w^{(i)}=\exp\left(-\frac{\lVert x-x^{(i)}\rVert^2}{2\tau^2}\right)
+  \]
+</p><p>Much like the locally weighted linear regression, this weighting scheme gives more at the &lsquo;&lsquo;nearby&rsquo;&rsquo; points when predicting the class of a new
+example.</p>
+<ul>
+<li><p>Implement the Newton-Raphson algorithm for optimizing \(\ell(\theta)\) for a new query point \(x\), and use this to predict the class of \(x\).</p>
+</li>
+</ul>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong>  See <samp>lwlr.m</samp>.</p></li></ul></p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+function y = lwlr(X_train, y_train, x, tau)
+
+%% Set parameters here
+threshold = 1e-7; % stop optimization when difference is lower than this
+max_iter = 50;
+lambda = 0.0001; % regularization parameter (dictated by problem set q2)
+
+
+%% Compute data lengths and sizes
+[m,n] = size(X_train); % m training examples, n features
+
+
+%% Compute weights, w
+dists = ones(m,1)*x' - X_train; % diffs bet. new query x &amp; training pts.
+norms = sum(dists.^2,2); % magnitude of diffs
+w = exp(-norms./(2*tau^2)); % wgts
+
+
+%% Newton's method
+theta = zeros(n,1); % initialize parameters
+ldiff = Inf;
+iters = 0;
+
+h_theta = sigmoid(X_train*theta);
+ltheta = zeros(max_iter+1,1);
+ltheta(iters+1) = w'*(y_train.*log(h_theta)+(1-y_train).*log(1-h_theta)) ...
+              - lambda*(theta'*theta)/2;
+
+while ldiff &gt; threshold &amp;&amp; iters ~= max_iter
+    iters = iters + 1;
+
+    Hl = X_train'*diag(-w.*h_theta.*(1-h_theta))*X_train - lambda*eye(n);
+    gradl = X_train'*(w.*(y_train-h_theta)) - lambda*theta;
+    theta = theta - Hl \ gradl;
+
+    h_theta = sigmoid(X_train*theta);
+    ltheta(iters+1) = w'*(y_train.*log(h_theta)+(1-y_train).*log(1-h_theta)) ...
+              - lambda*(theta'*theta)/2;
+    ldiff = abs(ltheta(iters+1) - ltheta(iters));
+end
+
+%% Output prediction for query point, x
+y = double(theta'*x &gt; 0);
+
+
+%% Subfunctions
+
+function g = sigmoid(z)
+% Evaluate sigmoid.
+g = 1./(1+exp(-z));
+</pre></div></div>
+<ul>
+<li><p>Evaluate the system with a variety of different bandwidth parameters \(\tau\).  In particular, try \(\tau=0.01\), \(0.05\), \(0.1\), \(0.5\), \(1.0\),
+\(5.0\). How does the classification boundary change when varying this parameter?  Can you predict what the decision boundary of ordinary
+(unweighted) logistic regression would look like?</p>
+</li>
+</ul>
+<p><ul style="list-style-type: none";>
+<li>
+<p>
+<strong>Ans.</strong> The plots of the decision boundaries for varying values of \(\tau\) are shown below.
+</p></li></ul></p>
+<div style="text-align: center;"><img width="80%" src="./images/LOWESS.png"></div>
+<p><ul style="list-style-type: none";>
+<li>
+<p>
+It becomes apparent that as \(\tau\to\infty\), \(w^{(i)}\to 1\) making \(\ell(\theta)\) converge to the ordinary (unweighted) logistic regression.
+</p></li></ul></p>
+</td>
+</tr>
+</table>
+</body>
+</html>
