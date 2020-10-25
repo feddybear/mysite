@@ -158,12 +158,12 @@ while ldiff &gt; threshold &amp;&amp; iters ~= max_iter
     ldiff = abs(ltheta(iters+1) - ltheta(iters));
 end
 
+
 %% Output prediction for query point, x
 y = double(theta'*x &gt; 0);
 
 
 %% Subfunctions
-
 function g = sigmoid(z)
 % Evaluate sigmoid.
 g = 1./(1+exp(-z));
@@ -185,6 +185,7 @@ g = 1./(1+exp(-z));
 <p>
 It becomes apparent that as \(\tau\to\infty\), \(w^{(i)}\to 1\) making \(\ell(\theta)\) converge to the ordinary (unweighted) logistic regression.
 </p></li></ul></p>
+<p><a href="mlpb_2020-10-24_3.html" target=&ldquo;blank&rdquo;>Next problem</a></p>
 </td>
 </tr>
 </table>

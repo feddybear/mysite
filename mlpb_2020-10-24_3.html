@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="css/uptheme.css" type="text/css" />
+<title>Supervised Learning Problem</title>
+<!-- MathJax -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+	  TeX: { extensions: ["TeX/AMSmath.js"], equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+<!-- End MathJax -->
+</head>
+<body>
+<div id="fwtitle">
+<div id="toptitle">
+<h1>Supervised Learning Problem</h1>
+<div id="subtitle">From Stanford's CS 229</div>
+</div>
+</div>
+<div id="tlayout">
+<div id="bbmenustart">
+<div id="layout-menu">
+<div id="menu-inner">
+<div class="menu-category">Federico Ang</div>
+<div class="menu-item"><a href="index.html">Home</a></div>
+<div class="menu-item"><a href="blog.html">Blog</a></div>
+<div class="menu-category">Problem Bank</div>
+<div class="menu-item"><a href="mlpb.html" class="current">Machine&nbsp;Learning</a></div>
+<div class="menu-item"><a href="pspb.html">Probability&nbsp;and&nbsp;Statistics</a></div>
+<div class="menu-category">External Links</div>
+<div class="menu-item"><a href="https://www.youtube.com" target="blank">YouTube&nbsp;Channel&nbsp;(maybe!)</a></div>
+</div>
+</div>
+<div id="layout-content">
+<div id="inner">
+<p><a href="mlpb.html" target=&ldquo;blank&rdquo;>Back to top</a></p>
+<h2>Multivariate least squares</h2>
+<p>So far, we have only considered cases where our target variable \(y\) is a scalar value.  Suppose that instead of trying to predict a single
+output, we have a training set with multiple outputs for each example:</p>
+<p style="text-align:center">
+\[
+	  \{(x^{(i)},y^{(i)}),i=1,\ldots,m\}, x^{(i)}\in\mathbb{R}^n, y^{(i)}\in\mathbb{R}^p.
+	\]
+</p><p>Thus for each training example, \(y^{(i)}\) is vector-valued, with \(p\) entries.  We wish to use a linear model to predict the outputs, as in
+least squares, by specifying the parameter matrix \(\Theta\) in</p>
+<p style="text-align:center">
+\[
+	  y=\Theta^TX,
+	\]
+</p><p>where \(\Theta\in\mathbb{R}^{n\times p}\).</p>
+<ul>
+<li><p>The cost function for this case is</p>
+</li>
+</ul>
+<p style="text-align:center">
+\[
+		  J(\Theta)=\frac{1}{2}\sum_{i=1}^m\sum_{j=1}^p\left((\Theta^Tx^{(i)})_j-y_j^{(i)}\right)^2.
+		\]
+</p><p><ul style="list-style-type: none";><li><p>
+Write \(J(\Theta)\) in matrix-vector notation (i.e., without using any summations).
+</p></li></ul></p>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong>
+We use the following set-up for the matrices:</p></li></ul></p>
+<p style="text-align:center">
+\[
+		    X\in\mathbb{R}^{m\times n}\\
+        \Theta\in\mathbb{R}^{n\times p}\\
+        Y\in\mathbb{R}^{m\times p}
+		  \]
+</p><p><ul style="list-style-type: none";><li><p>
+Each term inside the outermost parentheses can be taken cared of using \(X\Theta-Y\) resulting to an \(m\times p\) matrix
+of all the numbers we wish to square and add together.
+If we use the quadratic formulation for vectors to achieve the squaring (i.e. \((X\Theta-Y)^T(X\Theta-Y)\)),
+it becomes obvious that the off-diagonal entries of the resulting \(p\times p\) matrix must be discarded from the summation.
+Therefore, we can use the tr(ace) operation to achieve the summation:
+</p></li></ul></p>
+<p style="text-align:center">
+\[
+		    \boxed{J(\Theta)=\frac{1}{2}\,\textrm{tr}\,(X\Theta-Y)^T(X\Theta-Y)}
+    \]
+</p><ul>
+<li><p>Find the closed form solution for \(\Theta\) which minimizes \(J(\Theta)\).  This is equivalent to the normal equations for the
+multivariate case.</p>
+</li>
+</ul>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong></p></li></ul></p>
+<p style="text-align:center">
+\[
+		\begin{eqnarray*}
+		  \nabla_\Theta J(\Theta)&amp;=&amp;\frac{1}{2}\nabla_\Theta\,\textrm{tr}\,(X\Theta-Y)^T(X\Theta-Y)\\
+					 &amp;=&amp;\frac{1}{2}\nabla_\Theta\,\textrm{tr}\,(\Theta^TX^TX\Theta-\Theta^TX^TY-Y^TX\Theta+Y^TY)\\
+					 &amp;=&amp;\frac{1}{2}(2X^TX\Theta-2\nabla_\Theta\,\textrm{tr}\,\Theta Y^TX)\\
+					 &amp;=&amp;X^TX\Theta-X^TY
+		\end{eqnarray*}
+		\]
+</p><p><ul style="list-style-type: none";><li><p>Equating to zero and solving for \(\Theta\):</p></li></ul></p>
+<p style="text-align:center">
+\[
+		  \boxed{\Theta=(X^TX)^{-1}X^TY}
+		\]
+</p><ul>
+<li><p>Suppose instead of considering the multivariate vectors \(y^{(i)}\) all at once, we instead compute each variable \(y_j^{(i)}\)
+separately for each \(j=1,\ldots,p\).  In this case, we have a \(p\) individual linear models, of the form</p>
+</li>
+</ul>
+<p style="text-align:center">
+\[
+		  y_j^{(i)}=\theta_j^Tx^{(i)},j=1,\ldots,p.
+		\]
+</p><p><ul style="list-style-type: none";><li><p>
+(So here, each \(\theta_j\in\mathbb{R}^n\)).  How do the parameters from these \(p\) independent least squares problems compare to
+the multivariate solution?</p></li></ul></p>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong>
+The individual optimization of each \(\theta_j\) will simply correspond to each column of \(\Theta\) in the previous solution.
+Expanding the multivariate normal equations</p></li></ul></p>
+<p style="text-align:center">
+\[
+		  \left[
+		    \begin{array}{cccc}
+		     | &amp; | &amp;  &amp; | \\
+		     \theta_1 &amp; \theta_2 &amp; \cdots &amp; \theta_p \\
+		     | &amp; | &amp;  &amp; | \\
+		    \end{array}
+		  \right]=(X^TX)^{-1}X^T
+		  \left[
+		    \begin{array}{cccc}
+		     | &amp; | &amp;  &amp; | \\
+		     y_1 &amp; y_2 &amp; \cdots &amp; y_p \\
+		     | &amp; | &amp;  &amp; | \\
+		    \end{array}
+		  \right]
+		\]
+</p><p><ul style="list-style-type: none";><li><p>
+we get for \(j=1,\ldots,p\)</p></li></ul></p>
+<p style="text-align:center">
+\[
+		  \theta_j=(X^TX)^{-1}X^Ty_j
+		\]
+</p><p><a href="mlpb_2020-10-24_4.html" target=&ldquo;blank&rdquo;>Next problem</a></p>
+</td>
+</tr>
+</table>
+</body>
+</html>
