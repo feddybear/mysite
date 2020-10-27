@@ -52,7 +52,7 @@ MathJax.Hub.Config({
 <li><p>Show that the geometric distribution is in the exponential family, and give \(b(y)\), \(\eta\), \(T(y)\), and \(a(\eta)\).</p>
 </li>
 </ul>
-<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong>We start by expressing \(p(y;\phi)\) as:</p></li></ul></p>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong> We start by expressing \(p(y;\phi)\) as:</p></li></ul></p>
 <p style="text-align:center">
 \[
 \begin{eqnarray*}
@@ -78,7 +78,7 @@ What is the canonical response function for the family?
 You may use the fact that the mean of a geometric distribution is given by \(1/\phi\).</p>
 </li>
 </ul>
-<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong>Applying the assumptions for constructing a GLM model, we are looking for \(h_\theta(x)\):</p></li></ul></p>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong> Applying the assumptions for constructing a GLM model, we are looking for \(h_\theta(x)\):</p></li></ul></p>
 <p style="text-align:center">
 \[
 \begin{eqnarray*}
@@ -89,7 +89,7 @@ h_\theta(x)&amp;=&amp;E[y|x;\theta]\\
 \]
 </p><p><ul style="list-style-type: none";><li><p>and with the linear relation assumption (i.e. \(\eta=\theta^Tx\)):</p></li></ul></p>
 <p style="text-align:center">
-\[[
+\[
 \boxed{h_\theta(x)=\frac{1}{1-e^{\theta^Tx}}}
 \]
 </p><ul>
@@ -98,9 +98,9 @@ By taking the derivative of the log-likelihood with respect to \(\theta_j\), der
 using a GLM model with geometric responses \(y\) and the canonical response function.</p>
 </li>
 </ul>
-<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong>The log-likelihood for one example would be:</p></li></ul></p>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong> The log-likelihood for one example would be:</p></li></ul></p>
 <p style="text-align:center">
-\[[
+\[
 \begin{eqnarray*}
 \ell(\theta) &amp;=&amp; \log p(y|x;\theta)\\
            &amp;=&amp; \theta^Tx\cdot y+\log\left(e^{-\theta^Tx}-1\right)
