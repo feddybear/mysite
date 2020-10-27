@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="css/uptheme.css" type="text/css" />
+<title>Supervised Learning Problem</title>
+<!-- MathJax -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+	  TeX: { extensions: ["TeX/AMSmath.js"], equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+<!-- End MathJax -->
+</head>
+<body>
+<div id="fwtitle">
+<div id="toptitle">
+<h1>Supervised Learning Problem</h1>
+<div id="subtitle">From Stanford's CS 229</div>
+</div>
+</div>
+<div id="tlayout">
+<div id="bbmenustart">
+<div id="layout-menu">
+<div id="menu-inner">
+<div class="menu-category">Federico Ang</div>
+<div class="menu-item"><a href="index.html">Home</a></div>
+<div class="menu-item"><a href="blog.html">Blog</a></div>
+<div class="menu-category">Problem Bank</div>
+<div class="menu-item"><a href="mlpb.html" class="current">Machine&nbsp;Learning</a></div>
+<div class="menu-item"><a href="pspb.html">Probability&nbsp;and&nbsp;Statistics</a></div>
+<div class="menu-category">External Links</div>
+<div class="menu-item"><a href="https://www.youtube.com" target="blank">YouTube&nbsp;Channel&nbsp;(maybe!)</a></div>
+</div>
+</div>
+<div id="layout-content">
+<div id="inner">
+<p><a href="mlpb.html" target=&ldquo;blank&rdquo;>Back to top</a></p>
+<h2>Exponential family and the geometric distribution</h2>
+<p>Consider the geometric distribution parameterized by \(\phi\):</p>
+<p style="text-align:center">
+\[
+  p(y;\phi)=(1-\phi)^{y-1}\phi,&nbsp;y=1,2,3,\ldots
+\]
+</p><ul>
+<li><p>Show that the geometric distribution is in the exponential family, and give \(b(y)\), \(\eta\), \(T(y)\), and \(a(\eta)\).</p>
+</li>
+</ul>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong>We start by expressing \(p(y;\phi)\) as:</p></li></ul></p>
+<p style="text-align:center">
+\[
+\begin{eqnarray*}
+p(y;\phi) &amp;=&amp; \exp\left((y-1)\log(1-\phi) + \log\phi\right)\\
+          &amp;=&amp; \exp\left(\log(1-\phi)\cdot y - \log\left(\frac{1-\phi}{\phi}\right)\right)
+\end{eqnarray*}
+\]
+</p><p><ul style="list-style-type: none";><li><p>Based on this, the natural parameter \(\eta\) is equal to \(\log(1-\phi)\), giving us \(\phi=1-e^\eta\).  Substituting this last relationship gives us:</p></li></ul></p>
+<p style="text-align:center">
+\[
+  \boxed{
+\begin{aligned}
+  b(y) &amp;= 1\\
+    \eta &amp;= \log(1-\phi)\\
+    T(y) &amp;= y\\
+    a(\eta) &amp;= \log\left(\frac{1}{e^{-\eta}-1}\right)
+ \end{aligned}
+}
+\]
+</p><ul>
+<li><p>Consider performing regression using a GLM model with a geometric response variable.
+What is the canonical response function for the family?
+You may use the fact that the mean of a geometric distribution is given by \(1/\phi\).</p>
+</li>
+</ul>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong>Applying the assumptions for constructing a GLM model, we are looking for \(h_\theta(x)\):</p></li></ul></p>
+<p style="text-align:center">
+\[
+\begin{eqnarray*}
+h_\theta(x)&amp;=&amp;E[y|x;\theta]\\
+         &amp;=&amp;1/\phi\\
+         &amp;=&amp;1/(1-e^\eta)
+\end{eqnarray*}
+\]
+</p><p><ul style="list-style-type: none";><li><p>and with the linear relation assumption (i.e. \(\eta=\theta^Tx\)):</p></li></ul></p>
+<p style="text-align:center">
+\[[
+\boxed{h_\theta(x)=\frac{1}{1-e^{\theta^Tx}}}
+\]
+</p><ul>
+<li><p>For a training set \(\{(x^{(i)},y^{(i)}); i=1,\ldots,m\}\), let the log-likelihood of an example be \(\log{p(y^{(i)}|x^{(i)};\theta)}\).
+By taking the derivative of the log-likelihood with respect to \(\theta_j\), derive the stochastic gradient ascent rule for learning
+using a GLM model with geometric responses \(y\) and the canonical response function.</p>
+</li>
+</ul>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong>The log-likelihood for one example would be:</p></li></ul></p>
+<p style="text-align:center">
+\[[
+\begin{eqnarray*}
+\ell(\theta) &amp;=&amp; \log p(y|x;\theta)\\
+           &amp;=&amp; \theta^Tx\cdot y+\log\left(e^{-\theta^Tx}-1\right)
+\end{eqnarray*}
+\]
+</p><p><ul style="list-style-type: none";><li><p>Doing the differentiation wrt \(\theta_j\):</p></li></ul></p>
+<p style="text-align:center">
+\[
+\newcommand{\pd}{\partial}
+\begin{eqnarray*}
+\frac{\pd\ell(\theta)}{\pd\theta_j} &amp;=&amp; x_jy+\frac{1}{e^{-\theta^Tx}-1}\cdot e^{-\theta^Tx}\cdot -x_j\\
+&amp;=&amp; \left(y-\frac{1}{1-e^{\theta^Tx}}\right)x_j\\
+&amp;=&amp; (y-h_\theta(x))x_j
+\end{eqnarray*}
+\]
+</p><p>Substituting this result to the gradient ascent rule and generalizing for any of the \(m\) training samples, we get the usual update rule:</p>
+<p style="text-align:center">
+\[
+\boxed{
+\theta_j := \theta_j+\alpha(y^{(i)}-h_\theta(x^{(i)}))x^{(i)}_j
+}
+\]
+</p><p><a href="mlpb.html" target=&ldquo;blank&rdquo;>Back to top</a></p>
+</td>
+</tr>
+</table>
+</body>
+</html>
