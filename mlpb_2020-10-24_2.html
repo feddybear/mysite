@@ -67,7 +67,7 @@ The locally-weighted logistic regression problem (with regularization parameter,
                             \frac{\pd}{\pd\theta_k}{g(\theta^Tx^{(i)})}\\
   &amp;=&amp;-\lambda\theta_k+\sum_{i=1}^mw^{(i)}\left[\frac{y^{(i)}}{g(\theta^Tx^{(i)})}+\frac{y^{(i)}-1}{1-g(\theta^Tx^{(i)})}\right]
                             g(\theta^Tx^{(i)})(1-g(\theta^Tx^{(i)}))\frac{\pd}{\pd\theta_k}{\theta^Tx^{(i)}}\\
-      &amp;=&amp;\sum_{i=1}^mw^{(i)}[y^{(i)}(1-g(\theta^Tx^{(i)}))-(1-y^{(i)})g(\theta^Tx^{(i)})]x_k^{(i)}-\lambda\theta_k\\
+      &amp;=&amp;\sum_{i=1}^mw^{(i)}[y^{(i)}(1-g(\theta^Tx^{(i)}))+(y^{(i)}-1)g(\theta^Tx^{(i)})]x_k^{(i)}-\lambda\theta_k\\
       &amp;=&amp;\sum_{i=1}^mw^{(i)}(y^{(i)}-h_\theta(x^{(i)}))x_k^{(i)}-\lambda\theta_k
   \end{eqnarray*}
   \]
@@ -127,7 +127,8 @@ lambda = 0.0001; % regularization parameter (dictated by problem set q2)
 
 %% Compute data lengths and sizes
 [m,n] = size(X_train); % m training examples, n features
-
+X_train = [ones(m,1) X_train]; % include an intercept term
+n = n + 1;
 
 %% Compute weights, w
 dists = ones(m,1)*x' - X_train; % diffs bet. new query x &amp; training pts.

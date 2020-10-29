@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="css/uptheme.css" type="text/css" />
+<title>Supervised Learning Problem</title>
+<!-- MathJax -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+	  TeX: { extensions: ["TeX/AMSmath.js"], equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+<!-- End MathJax -->
+</head>
+<body>
+<div id="fwtitle">
+<div id="toptitle">
+<h1>Supervised Learning Problem</h1>
+<div id="subtitle">From Stanford's CS 229</div>
+</div>
+</div>
+<div id="tlayout">
+<div id="bbmenustart">
+<div id="layout-menu">
+<div id="menu-inner">
+<div class="menu-category">Federico Ang</div>
+<div class="menu-item"><a href="index.html">Home</a></div>
+<div class="menu-item"><a href="blog.html">Blog</a></div>
+<div class="menu-category">Problem Bank</div>
+<div class="menu-item"><a href="mlpb.html" class="current">Machine&nbsp;Learning</a></div>
+<div class="menu-item"><a href="pspb.html">Probability&nbsp;and&nbsp;Statistics</a></div>
+<div class="menu-category">External Links</div>
+<div class="menu-item"><a href="https://www.youtube.com" target="blank">YouTube&nbsp;Channel&nbsp;(maybe!)</a></div>
+</div>
+</div>
+<div id="layout-content">
+<div id="inner">
+<p><a href="mlpb.html" target=&ldquo;blank&rdquo;>Back to top</a></p>
+<h2>Logistic regression</h2>
+<p>Consider the log-likelihood function for logistic regression:</p>
+<p style="text-align:center">
+\[
+    	\ell(\theta)=\sum_{i=1}^my^{(i)}\log h_\theta(x^{(i)})+(1-y^{(i)})\log\left(1-h_\theta(x^{(i)})\right)
+    \]
+</p><ul>
+<li><p>Find the Hessian \(H\) of the function, and show that for any vector \(z\), it holds true that</p>
+</li>
+</ul>
+<p style="text-align:center">
+\[
+  		z^THz\leq 0\text{.}
+  \]
+</p><p><ul style="list-style-type: none";><li><p>[Hint: You might want to start by showing the fact that \(\sum_i\sum_j z_ix_ix_jz_j=(x^Tz)^2\geq 0\).]<br><strong>Remark:</strong>This is one of the standard ways of showing that the matrix \(H\) is negative semi-definite, written &lsquo;&lsquo;\(H\leq 0\).''  This implies that \(\ell\) is concave, and has no local maxima other than the global one.  If you have some other way of showing \(H\leq 0\), you're also welcome to use your method instead of the one above.
+</p></li></ul></p>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong> For the sake of completeness, we re-derive the result of calculating the gradient by first showing the useful property of the derivative of the sigmoid function, \(g(z)\):</p></li></ul></p>
+<p style="text-align:center">
+\[
+  \begin{eqnarray*}
+  	\frac{d}{dz}g(z) &amp;=&amp; \frac{d}{dz}\,\frac{1}{1+e^{-z}}\\
+  	                 &amp;=&amp; \frac{-1}{(1+e^{-z})^2}\left(-e^{-z}\right)\\
+  	                 &amp;=&amp; \frac{1}{1+e^{-z}}\cdot\frac{e^{-z}}{1+e^{-z}}\\
+  	                 &amp;=&amp; \frac{1}{1+e^{-z}}\left(1-\frac{1}{1+e^{-z}}\right)\\
+  	                 &amp;=&amp; g(z)\left(1-g(z)\right)\text{.}
+  \end{eqnarray*}
+\]
+</p><p><ul style="list-style-type: none";><li><p>With this, we can start solving for the gradient:</p></li></ul></p>
+<p style="text-align:center">
+\[
+  \newcommand{\pd}{\partial}
+      \begin{eqnarray*}
+  	\frac{\pd\ell(\theta)}{\pd\theta_k} &amp;=&amp; \sum_{i=1}^m y^{(i)}\frac{\pd}{\pd\theta_k}{\log h_\theta(x^{(i)})+
+  		(1-y^{(i)})\frac{\pd}{\pd\theta_k}\log{\left(1-h_\theta(x^{(i)})\right)}}\\
+  	&amp;=&amp;\sum_{i=1}^m\left(\frac{y^{(i)}}{g(\theta^Tx^{(i)})}-\frac{1-y^{(i)}}{1-g(\theta^Tx^{(i)})}\right)
+  	\frac{\pd}{\pd\theta_k}{g(\theta^Tx^{(i)})}\\
+  	&amp;=&amp;\sum_{i=1}^m\left(\frac{y^{(i)}}{g(\theta^Tx^{(i)})}+\frac{y^{(i)}-1}{1-g(\theta^Tx^{(i)})}\right)
+  	g(\theta^Tx^{(i)})\left(1-g(\theta^Tx^{(i)})\right)\frac{\pd}{\pd\theta_k}{\theta^Tx^{(i)}}\\
+  	&amp;=&amp;\sum_{i=1}^m\left(y^{(i)}(1-g(\theta^Tx^{(i)}))+(y^{(i)}-1)g(\theta^Tx^{(i)})\right)x_k^{(i)}\\
+  	&amp;=&amp;\sum_{i=1}^m\left(y^{(i)}-h_\theta(x^{(i)})\right)x_k^{(i)}
+  \end{eqnarray*}
+\]
+</p><p><ul style="list-style-type: none";><li><p>We then take the derivative of this result to get the Hessian \(H\) (order of the sub-indices do not matter due to symmetry):</p></li></ul></p>
+<p style="text-align:center">
+\[
+  	H_{kl}=\frac{\pd^2\ell(\theta)}{\pd\theta_l\pd\theta_k} = \frac{\pd}{\pd\theta_l}\sum_{i=1}^m\left(y^{(i)}-h_\theta(x^{(i)})\right)x_k^{(i)}
+  \]
+</p><p><ul style="list-style-type: none";><li><p>Reusing the derivative property of the sigmoid function:</p></li></ul></p>
+<p style="text-align:center">
+\[
+  \begin{eqnarray*}
+  	H_{kl} &amp;=&amp; \frac{\pd}{\pd\theta_l}\sum_{i=1}^m\left(y^{(i)}-g(\theta^Tx^{(i)})\right)x_k^{(i)}\\
+  	       &amp;=&amp; \sum_{i=1}^m-g(\theta^Tx^{(i)})\left(1-g(\theta^Tx^{(i)})\right)x_k^{(i)}\frac{\pd}{\pd\theta_l}{\theta^Tx^{(i)}}\\
+  	       &amp;=&amp; -\sum_{i=1}^m h_\theta(x^{(i)})\left(1-h_\theta(x^{(i)})\right)x_k^{(i)}x_l^{(i)}
+  \end{eqnarray*}
+  \]
+</p><p><ul style="list-style-type: none";><li><p>and can be succinctly written in vector notation as:</p></li></ul></p>
+<p style="text-align:center">
+\[
+    \boxed{H=X^TDX}
+  \]
+</p><p><ul style="list-style-type: none";><li><p>where \(D\in\mathbb{R}^{n\times n}\) is a diagonal matrix whose entries are</p></li></ul></p>
+<p style="text-align:center">
+\[
+  	D_{ii}=-h_\theta(x^{(i)})\left(1-h_\theta(x^{(i)})\right)
+  \]
+</p><p><ul style="list-style-type: none";><li><p>To show that \(H\) is negative semi-definite, we can write:</p></li></ul></p>
+<p style="text-align:center">
+\[
+  	H=-\sum_{i=1}^mh_\theta(x^{(i)})\left(1-h_\theta(x^{(i)})\right)x^{(i)}{x^{(i)}}^T
+  \]
+</p><p><ul style="list-style-type: none";><li><p>From this, we can show that for any vector \(z\), it holds true that \(z^THz\leq 0\):</p></li></ul></p>
+<p style="text-align:center">
+\[
+  \begin{eqnarray*}
+  	z^THz &amp;=&amp; z^T\left(-\sum_{i=1}^mh_\theta(x^{(i)})\left(1-h_\theta(x^{(i)})\right)x^{(i)}{x^{(i)}}^T\right)z\\
+  	&amp;=&amp; -\sum_{i=1}^mh_\theta(x^{(i)})\left(1-h_\theta(x^{(i)})\right)z^Tx^{(i)}{x^{(i)}}^Tz\\
+  	&amp;=&amp; -\sum_{i=1}^mh_\theta(x^{(i)})\left(1-h_\theta(x^{(i)})\right)(z^Tx^{(i)})^2\\
+  	&amp;\leq&amp; 0
+  \end{eqnarray*}
+\]
+</p><ul>
+<li><p>Data containing the inputs \((x^{(i)}\in\mathbb{R}^2)\) and outputs \((y^{(i)})\in\{0,1\})\) are given for a binary classification problem.  Implement Newton's method for optimizing \(\ell(\theta)\), and apply it to fit a logistic regression model to the data.  Initialize Newton's method with \(\theta=\vec{0}\) (the vector of all zeros).  What are the coefficients \(\theta\) resulting from your fit?  (Remember to include the intercept term.)</p>
+</li>
+</ul>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong> See <samp>logr.m</samp>.</p></li></ul></p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+
+  function [theta,ltheta] = logr(X_train, y_train)
+
+  %% Set parameters here
+  threshold = 1e-7; % stop optimization when difference is lower than this
+  max_iter = 50;
+
+
+  %% Compute data lengths and sizes
+  [m,n] = size(X_train); % m training examples, n features
+  X_train = [ones(m,1) X_train]; % add intercept term
+  n = n+1;
+
+
+  %% Newton's method
+  theta = zeros(n,1); % initialize parameters
+  ldiff = Inf;
+  iters = 0;
+
+  h_theta = sigmoid(X_train*theta);
+  ltheta = zeros(max_iter+1,1);
+  ltheta(iters+1) = sum(y_train.*log(h_theta)+(1-y_train).*log(1-h_theta));
+
+  while ldiff &gt; threshold &amp;&amp; iters ~= max_iter
+      iters = iters + 1;
+
+      Hl = X_train'*diag(-h_theta.*(1-h_theta))*X_train;
+      gradl = X_train'*(y_train-h_theta);
+      theta = theta - Hl \ gradl;
+
+      h_theta = sigmoid(X_train*theta);
+      ltheta(iters+1) = sum(y_train.*log(h_theta)+(1-y_train).*log(1-h_theta));
+      ldiff = abs(ltheta(iters+1) - ltheta(iters));
+  end
+
+
+  %% Subfunctions
+
+  function g = sigmoid(z)
+  % Evaluate sigmoid.
+  g = 1./(1+exp(-z));
+</pre></div></div>
+<p><ul style="list-style-type: none";><li><p>Running the implementation gives us:</p></li></ul></p>
+<p style="text-align:center">
+\[
+  \theta=\left[\begin{array}{c}-2.620511597178013\\0.760371535897073\\1.171946741565786\end{array}\right]
+\]
+</p><ul>
+<li><p>Plot the training data.  Also plot the decision boundary fit by logistic regression on the same figure.  (i.e. this should be a straight line showing the boundary separating the region where \(h_\theta(x)&gt;0.5\) from where \(h_\theta(x)\leq 0.5\).)</p>
+</li>
+</ul>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong></p></li></ul></p>
+<div style="text-align: center;"><img width="80%" src="./images/logres.svg"></div>
+<p><a href="mlpb_2020-10-29_2.html" target=&ldquo;blank&rdquo;>Next problem</a></p>
+</td>
+</tr>
+</table>
+</body>
+</html>
