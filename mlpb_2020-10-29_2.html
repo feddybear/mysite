@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<link rel="stylesheet" href="css/uptheme.css" type="text/css" />
+<title>Supervised Learning Problem</title>
+<!-- MathJax -->
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+	  TeX: { extensions: ["TeX/AMSmath.js"], equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+<!-- End MathJax -->
+</head>
+<body>
+<div id="fwtitle">
+<div id="toptitle">
+<h1>Supervised Learning Problem</h1>
+<div id="subtitle">From Stanford's CS 229</div>
+</div>
+</div>
+<div id="tlayout">
+<div id="bbmenustart">
+<div id="layout-menu">
+<div id="menu-inner">
+<div class="menu-category">Federico Ang</div>
+<div class="menu-item"><a href="index.html">Home</a></div>
+<div class="menu-item"><a href="blog.html">Blog</a></div>
+<div class="menu-category">Problem Bank</div>
+<div class="menu-item"><a href="mlpb.html" class="current">Machine&nbsp;Learning</a></div>
+<div class="menu-item"><a href="pspb.html">Probability&nbsp;and&nbsp;Statistics</a></div>
+<div class="menu-category">External Links</div>
+<div class="menu-item"><a href="https://www.youtube.com" target="blank">YouTube&nbsp;Channel&nbsp;(maybe!)</a></div>
+</div>
+</div>
+<div id="layout-content">
+<div id="inner">
+<p><a href="mlpb.html" target=&ldquo;blank&rdquo;>Back to top</a></p>
+<h2>Locally-weighted linear regression</h2>
+<p>Consider a linear regression problem in which we want to &lsquo;&lsquo;weight&rsquo;&rsquo; different training examples differently. Specifically, suppose we want to minimize</p>
+<p style="text-align:center">
+\[
+  	J(\theta)=\frac{1}{2}\sum_{i=1}^mw^{(i)}\left(\theta^Tx^{(i)}-y^{(i)}\right)^2\text{.}
+  \]
+</p><ul>
+<li><p>Show that \(J(\theta)\) can also be written as</p>
+</li>
+</ul>
+<p style="text-align:center">
+\[
+  		J(\theta)=(X\theta-\vec{y})^TW(X\theta-\vec{y})
+  	\]
+</p><p><ul style="list-style-type: none";><li><p>for an appropriate diagonal matrix \(W\), and where \(X\) and \(\vec{y}\) are as defined for the unweighted case.  State clearly what \(W\) is.</p></li></ul></p>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong> We can rearrange \(J(\theta)\) as:</p></li></ul></p>
+<p style="text-align:center">
+\[
+		J(\theta)=\sum_{i=1}^m\left(\theta^Tx^{(i)}-y^{(i)}\right)\frac{1}{2}w^{(i)}\left(\theta^Tx^{(i)}-y^{(i)}\right)
+  	\]
+</p><p><ul style="list-style-type: none";><li><p>From this we can set the entries of \(W\in\mathbb{R}^{m\times m}\) as:</p></li></ul></p>
+<p style="text-align:center">
+\[
+    	W_{ij}=\left\{\begin{array}{rl}
+    		w^{(i)}/2 &amp; i=j\\
+    		0 &amp; i\neq j
+    	\end{array}\right.
+    \]
+</p><p><ul style="list-style-type: none";><li><p>Let \(z_i=\theta^Tx^{(i)}-y^{(i)}\), then we have</p></li></ul></p>
+<p style="text-align:center">
+\[
+    \begin{eqnarray*}
+    	J(\theta)&amp;=&amp;\sum_{i=1}^mz_iW_{ii}z_i\\
+    	         &amp;=&amp;\sum_{i=1}^mz_i\left(Wz\right)_i\\
+    	         &amp;=&amp;z^TWz
+    \end{eqnarray*}
+    \]
+</p><p><ul style="list-style-type: none";><li><p>expanding \(z\) to its vector form \(z=X\theta-\vec{y}\) completes the rewrite.</p></li></ul></p>
+<ul>
+<li><p>If all the \(w^{(i)}\)'s equal 1, then the normal equation is</p>
+</li>
+</ul>
+<p style="text-align:center">
+\[
+		X^TX\theta=X^T\vec{y}\text{,}
+	\]
+</p><p><ul style="list-style-type: none";><li><p>and that the value of \(\theta\) that minimizes \(J(\theta)\) is given by \((X^TX)^-1X^T\vec{y}\).  By finding the derivative \(\nabla_{\theta}J(\theta)\) and setting that to zero, generalize the normal equation to this weighted setting, and give the new value of \(\theta\) that minimizes \(J(\theta)\) in closed form as a function of \(X\), \(W\), and \(\vec{y}\).</p></li></ul></p>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong> Starting by expanding the matrix-vector notation for \(J(\theta)\), we can get the derivative as:</p></li></ul></p>
+<p style="text-align:center">
+\[
+	\begin{eqnarray*}
+		\nabla_{\theta}J(\theta) &amp;=&amp; \nabla_{\theta}(X\theta-\vec{y})^TW(X\theta-\vec{y})\\
+		&amp;=&amp; \nabla_{\theta} (\theta^TX^TWX\theta-\theta^TX^TW\vec{y}-\vec{y}^TWX\theta+\vec{y}^TW\vec{y})\\
+		&amp;=&amp; 2X^TWX\theta-X^TW\vec{y}-X^TW\vec{y}\\
+		&amp;=&amp; 2X^TW(X\theta-\vec{y})
+	\end{eqnarray*}
+  \]
+</p><p><ul style="list-style-type: none";><li><p>where there is no need to explicitly transpose \(W\) since it is diagonal.  Solving for \(\theta\):</p></li></ul></p>
+<p style="text-align:center">
+\[
+	\begin{eqnarray*}
+		2X^TWX\theta-2X^TW\vec{y} &amp;=&amp; 0\\
+		X^TWX\theta &amp;=&amp; X^TW\vec{y}
+	\end{eqnarray*}
+\]
+</p><p style="text-align:center">
+\[
+\boxed{\theta=(X^TWX)^{-1}X^TW\vec{y}}
+\]
+</p><ul>
+<li><p>Suppose we have a training set \(\left\{(x^{(i)},y^{(i)}); i=1,\ldots,m\right\}\) of \(m\) independent examples, but in which the \(y^{(i)}\)'s were observed with different variances.  Specifically, suppose that</p>
+</li>
+</ul>
+<p style="text-align:center">
+\[
+		p(y^{(i)}|x^{(i)};\theta)=\frac{1}{\sqrt{2\pi}\sigma^{(i)}}\exp{\left(-\frac{(y^{(i)}-\theta^Tx^{(i)})^2}{2{\sigma^{(i)}}^2}\right)}
+	\]
+</p><p><ul style="list-style-type: none";><li><p>i.e. \(y^{(i)}\) has mean \(\theta^Tx^{(i)}\) and variance \({\sigma^{(i)}}^2\)  (where the \(\sigma^{(i)}\)'s are fixed, known constants).  Show that finding the maximum likelihood estimate of \(\theta\) reduces to solving a weighted linear regression problem.  State clearly what the \(w^{(i)}\)'s are in terms of the \(\sigma^{(i)}\)'s.</p></li></ul></p>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong> We can start by minimizing the log-likelihood \(\ell(\theta)\), first simplifying:</p></li></ul></p>
+<p style="text-align:center">
+\[
+	\begin{eqnarray*}
+		\ell(\theta)&amp;=&amp;\log\prod_{i=1}^{m}p(y^{(i)}|x^{(i)};\theta)\\
+		&amp;=&amp;\sum_{i=1}^{m}\left(\log\frac{1}{\sqrt{2\pi}\sigma^{(i)}}\right)-\frac{(y^{(i)}-\theta^Tx^{(i)})^2}{2{\sigma^{(i)}}^2}
+	\end{eqnarray*}
+  \]
+</p><p><ul style="list-style-type: none";><li><p>then taking the derivative</p></li></ul></p>
+<p style="text-align:center">
+\[
+  \newcommand{\pd}{\partial}
+	\begin{eqnarray*}
+		\frac{\pd\ell(\theta)}{\pd\theta_j}&amp;=&amp;-\frac{1}{2}\sum_{i=1}^m\frac{2}{{\sigma^{(i)}}^2}(y^{(i)}-\theta^Tx^{(i)})\left(-x_j^{(i)}\right)\\
+		&amp;=&amp; \sum_{i=1}^mx_j^{(i)}\frac{1}{{\sigma^{(i)}}^2}(y^{(i)}-\theta^Tx^{(i)})
+	\end{eqnarray*}
+  \]
+</p><p><ul style="list-style-type: none";><li><p>Generalizing this result to all \(\theta\) gives:</p></li></ul></p>
+<p style="text-align:center">
+\[
+		\nabla_\theta\ell(\theta)=X^T\Sigma(X\theta-\vec{y})
+	\]
+</p><p><ul style="list-style-type: none";><li><p>where \(\Sigma\in\mathbb{R}^{m\times m}\) is a diagonal matrix whose entries are \(\Sigma_{ii}=1/{\sigma^{(i)}}^2\).  The maximum likelihood estimate of \(\theta\) then becomes:</p></li></ul></p>
+<p style="text-align:center">
+\[
+    \begin{eqnarray*}
+    	X^T\Sigma X\theta-X^T\Sigma\vec{y} &amp;=&amp; 0\\
+    	X^T\Sigma X\theta &amp;=&amp; X^T\Sigma\vec{y}\\
+    	\theta &amp;=&amp; (X^T\Sigma X)^{-1}X^T\Sigma\vec{y}\\
+    \end{eqnarray*}
+    \]
+</p><p><ul style="list-style-type: none";><li><p>Comparing this result with the weighted linear regression, we can see that the weights are replaced by the matrix of variances, specifically for each entry of the diagonal:</p></li></ul></p>
+<p style="text-align:center">
+\[
+		w^{(i)}=\frac{2}{{\sigma^{(i)}}^2}
+	\]
+</p><p>Data are given that contains the inputs \(x^{(i)}\) and outputs \(y^{(i)}\) for a regression problem, with one training example per row.</p>
+<ul>
+<li><p>Implement (unweighted) linear regression (\(y=\theta^Tx\)) on this dataset (using the normal equations), and plot on the same figure the data and the straight line resulting from your fit.  (Remember to include the intercept term.)</p>
+</li>
+</ul>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong> See <samp>linr.m</samp></p></li></ul></p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+	function theta = linr(X_train, y_train)
+
+	%% Add for intercept terms
+	m = size(X_train,1);
+	X_train = [ones(m,1) X_train];
+
+	%% Normal equation
+	theta = (X_train'*X_train) \ X_train'*y_train;
+</pre></div></div>
+<div style="text-align: center;"><img width="80%" src="./images/linr.svg"></div>
+<ul>
+<li><p>Implement locally weighted linear regression on this dataset (using the weighted normal equations derived previously), and plot on the same figure the data and the curve resulting from your fit.  When evaluating \(h(\cdot)\) at a query point \(x\), use weights</p>
+</li>
+</ul>
+<p style="text-align:center">
+\[
+		w^{(i)}=\exp{\left(-\frac{(x-x^{(i)})^2}{2\tau^2}\right)}
+	\]
+</p><p>with a bandwidth parameter \(\tau=0.8\).  (Again, remember to include the intercept term.)</p>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong> See <samp>lwlinr.m</samp></p></li></ul></p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+function theta = lwlinr(X_train, y_train, tau, x)
+
+%% Add for intercept terms
+m = size(X_train,1);
+X_train = [ones(m,1) X_train];
+
+%% Weights matrix
+W = diag(exp(-(x-X_train(:,2)).^2 / (2*tau^2)));
+
+%% Normal equation
+theta = (X_train'*W*X_train) \ X_train'*W*y_train;
+</pre></div></div>
+<div style="text-align: center;"><img width="80%" src="./images/lwlinr_0.8.svg"></div>
+<ul>
+<li><p>Repeat locally weighted linear regression four times, with \(\tau=0.1,0.3,2,\text{ and }10\).  Comment briefly on what happens to the fit when \(\tau\) is too small of too large.</p>
+</li>
+</ul>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong></p></li></ul></p>
+  <div style="text-align: center;"><img width="80%" src="./images/lwlinr_cmp.svg"></div>
+<p><ul style="list-style-type: none";><li><p>It can be observed that when \(\tau\) is too small, the model approaches &lsquo;&lsquo;overfitting" the training data, whereas setting the \(\tau\) too large makes the fit approach that of the unweighted case.</p></li></ul></p>
+<p><a href="mlpb_2020-10-24_3.html" target=&ldquo;blank&rdquo;>Next problem</a></p>
+</td>
+</tr>
+</table>
+</body>
+</html>

@@ -78,19 +78,19 @@ What is the canonical response function for the family?
 You may use the fact that the mean of a geometric distribution is given by \(1/\phi\).</p>
 </li>
 </ul>
-<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong> Applying the assumptions for constructing a GLM model, we are looking for \(h_\theta(x)\):</p></li></ul></p>
+<p><ul style="list-style-type: none";><li><p><strong>Ans.</strong></p></li></ul></p>
 <p style="text-align:center">
 \[
 \begin{eqnarray*}
-h_\theta(x)&amp;=&amp;E[y|x;\theta]\\
-         &amp;=&amp;1/\phi\\
-         &amp;=&amp;1/(1-e^\eta)
+g(\eta)&amp;=&amp;E[T(y);\eta]\\
+         &amp;=&amp;E[y;\phi]\\
+         &amp;=&amp;1/\phi
 \end{eqnarray*}
 \]
-</p><p><ul style="list-style-type: none";><li><p>and with the linear relation assumption (i.e. \(\eta=\theta^Tx\)):</p></li></ul></p>
+</p><p><ul style="list-style-type: none";><li><p>Therefore:</p></li></ul></p>
 <p style="text-align:center">
 \[
-\boxed{h_\theta(x)=\frac{1}{1-e^{\theta^Tx}}}
+\boxed{g(\eta)=\frac{1}{1-e^\eta}}
 \]
 </p><ul>
 <li><p>For a training set \(\{(x^{(i)},y^{(i)}); i=1,\ldots,m\}\), let the log-likelihood of an example be \(\log{p(y^{(i)}|x^{(i)};\theta)}\).
@@ -113,14 +113,13 @@ using a GLM model with geometric responses \(y\) and the canonical response func
 \begin{eqnarray*}
 \frac{\pd\ell(\theta)}{\pd\theta_j} &amp;=&amp; x_jy+\frac{1}{e^{-\theta^Tx}-1}\cdot e^{-\theta^Tx}\cdot -x_j\\
 &amp;=&amp; \left(y-\frac{1}{1-e^{\theta^Tx}}\right)x_j\\
-&amp;=&amp; (y-h_\theta(x))x_j
 \end{eqnarray*}
 \]
 </p><p>Substituting this result to the gradient ascent rule and generalizing for any of the \(m\) training samples, we get the usual update rule:</p>
 <p style="text-align:center">
 \[
 \boxed{
-\theta_j := \theta_j+\alpha(y^{(i)}-h_\theta(x^{(i)}))x^{(i)}_j
+\theta_j := \theta_j+\alpha\left(y^{(i)}-\frac{1}{1-e^{\theta^Tx^{(i)}}}\right)x^{(i)}_j
 }
 \]
 </p><p><a href="mlpb.html" target=&ldquo;blank&rdquo;>Back to top</a></p>
