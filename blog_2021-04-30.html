@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="icon" href="./images/favicon.ico">
+<link rel="stylesheet" href="./css/main.css" type="text/css" />
+<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+<!--- <title>Fed's Blog</title> --->
+<title>Federico Ang</title>
+<!-- MathJax -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async>
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+	  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+<!-- End MathJax -->
+</head>
+<body>
+<div id="main-container">
+<div id="header-container">
+<div id="header">
+<div id="header-icon-text-container">
+<div id="header-icon-container" >
+<a href="index.html"><img src="./images/fed.jpg" alt="Fed" style="width: 100%; height: 100%; position: center; padding:0px; margin: 0px;"></a>
+</div>
+<div id="header-text-container">
+<a href="index.html">Federico Ang</a>
+</div>
+</div>
+<div id="main">
+<button class="openbtn" onclick="openNav()">☰</button>
+</div>
+</div>
+</div>
+<div id="layout">
+<div id="layout-menu-container">
+<div id="layout-menu">
+<div class="menu-item"><a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a></div>
+<div class="menu-category">Federico Ang</div>
+<div class="menu-item"><a href="index.html">Home</a></div>
+<div class="menu-item"><a href="blog.html" class="current">Blog</a></div>
+<div class="menu-category">Problem Bank</div>
+<div class="menu-item"><a href="mlpb.html">Machine&nbsp;Learning</a></div>
+<div class="menu-item"><a href="pspb.html">Probability&nbsp;and&nbsp;Statistics</a></div>
+<div class="menu-category">External Links</div>
+<div class="menu-item"><a href="https://www.youtube.com" target="blank">YouTube&nbsp;Channel&nbsp;(maybe!)</a></div>
+</div> <!-- <div id="layout-menu"> -->
+</div> <!-- <div id="layout-menu-container"> -->
+<div id="layout-content-container">
+<div id="layout-content">
+<div id="toptitle">
+<h1>Fed's Blog</h1>
+<div id="subtitle">Where every entry is a struggle.</div>
+</div>
+<h2>Project Flipside: Getting serious about Pinoy ASR</h2>
+<p>For my first entry, I’d like to talk a bit about Project Flipside.  I have always wanted to start this project and it’s already
+long overdue.  It was during one of those days while doing my PhD that the idea came to mind.  There are many “initiatives” on
+Filipino speech technology from different academic and research institutions in the Philippines, but the problem is the lack of
+intention to be rigorous, to have integrity or have long-lasting effect in their outcomes.  I’m not just throwing criticisms
+here to discredit anybody but it's happening and this is more of an outcry from frustration.  There are publications on developments
+that supposedly report very high accuracies on their task, but aren’t really accessible once you start inquiring about them.
+I myself understand that there are so many factors to consider on why mediocre research and sloppy science happens, especially
+in progressive countries.  It may or may not be intentional, but pressure definitely plays a big part here.  My only hope is
+that researchers who commit them would be willing to admit (even silently) and change their mindset for the better, instead of
+embracing competitiveness by taking advantage of using shortcuts at a time when the country is already suffering from
+brain-drain.</p>
+<p>But I digress, although I really wanted to bring that out to light.</p>
+<p>Going back to explaining the goals of Project Flipside.  First, the name.  While many consider the term “Flip” when referring to
+Filipinos as being derogatory, I actually find it quite cool sounding.  It’s really all about whether you take these man-made
+constructs too seriously.  The reason why I think Flipside is a good name is because I like to think of this project as an
+alternative to what big tech companies have already been doing, focusing on the general techniques for rapid prototyping of
+speech-based AI systems targetting many languages at once.  Similar to a macro- and micro-level view of things, I consider
+general architectures (TDNN, Conformer), techniques (iVectors, SpecAugment) and approaches for rapid prototyping of systems for
+multilingual targets as the “macro”.  And on the <i>flipside</i>, doing custom fine tuning to improve performance by taking advantage
+of language-dependent peculiarities is the “micro”.  For example, using some form of language-specific subword modeling when
+creating vocabularies for agglutinative languages.  I’m aware that programs such as BABEL and MATERIAL by IARPA in the US are
+also doing these micro-level experiments to see what techniques benefit different languages in the low-resource category, but I
+hope that they are more open to bring in more native speakers to learn about their findings.  The funny thing about these
+programs, at least from my experience, is that it’s the evaluation sets that are harder to come by as opposed to the training
+and development sets.  I’ve sent requests to some of their proponents but I always failed in acquiring those exclusive sets.</p>
+<p>So at the onset, the first goal of this project is to establish standard datasets for benchmarking accuracies of models for
+Filipino Automatic Speech Recognition (ASR) and hopefully, its related issues: voice activity detection, wake-up word, keyword
+spotting, utterance segmentation, channel separation for mixed signals, and diarization, to name a few.  Of course, this means
+that assumptions on audio and transcription formats, use case or topic domain, default segmentation, and channel conditions have
+to be made.  I wanted to discuss about these in detail but I realized that its better to save it until the datasets are already
+available to be distributed.  Speaking of availability, I also wish to include publicity and accessibility as part of the goals.
+Right now we are at the transcription stages and I am in the process of recruiting the help of an organization for the validation
+of the labels.  Another aspect that I didn’t immediately mention but I think is something that not many benchmarking datasets
+address is that of recency, considering the fact that language evolves and buzzwords and trends change so fast.  A kind of
+window-period-based versioning for the datasets must be put in place.  I hope that in the process of continuing this project,
+this is something that we always take into account.  I am not a big fan of giga-corpora and I believe recency is the key to all
+the hullabaloo against "stochastic parrots”.</p>
+<p>The second short-term goal of the project is to showcase a running development of systems, with open source recipes that can be
+proactively developed and versioned in a distributed manner, starting with ASR.  This is the part that will also require a huge
+amount of effort and resources, but is also highly dependent on the first goal of creating the standard datasets.  Just in ASR,
+for example, there are already so many baseline “macro-level" techniques out there, and usually the average researcher who is
+only starting out will definitely get overwhelmed with the vast amount of concepts that they need to understand to truly say that
+they haven’t left any stone unturned before catching up.  Imagine the horror of a legacy signal processing researcher who started
+his career building systems on Janus, HTK, Julius and did a bit of Kaldi before the boom of deep learning.  How that person gets
+pressured into moving directly to implement a deep learning-based hybrid CTC and attention-based system, while for the language
+that person is working on, haven’t even established whether an acoustic unit for ephenthetic silence or word-piece modeling are
+truly beneficial in the hybrid HMM-DNN system they are currently developing.  Not to mention, whether the statistical language
+model or the post-decode rescoring set up is actually already optimal.  Those at the forefront would argue that these are trivial
+issues, but the terrain of the playing field isn’t exactly flat — and those at the mountain peaks are just continually climbing
+and not looking down at those still treading the valleys.  Speech AI, despite the strides that focus groups from big tech
+companies have made, still moves quite glacial when compared to text-focused NLP and computer vision (CV).  I am always reminded
+of this very nice Gradient series of articles by Alexander Veysov, where he talks about why this is the case.  But even that
+article didn’t change the minds of some people (at least in my circle) who only sees the outputs coming from the NLP and CV
+communities.  Even on the surface I can make a bunch of arguments: text and image is abundant and has a higher level of
+universality than speech, and just by looking at the number of available annotation tools from surveys I found will give you an
+idea (CV: 59, NLP: 14, and Speech: 4).  Speech AI is hard.  Oh my, I didn’t realize I’m already ranting too much.</p>
+<p>I'm going to stop here before my pessimism blows out of proportion.  I guess this topic is going to need more entries in the
+future and hopefully I don’t go off on tangents again.  Next time no more rants!  I really just wanted to have a first entry.</p>
+<p>That’s all.</p>
+<p>
+<script src="https://utteranc.es/client.js"
+repo="feddybear/mysite"
+issue-term="pathname"
+theme="github-light"
+crossorigin="anonymous"
+async>
+</script>
+</p>
+</div> <!-- <div id="layout-content"> -->
+<div id="footer-container">
+<div id="footer">
+<div id="footer-text">
+Last edited  on April 30<sup>th</sup> 2021  01:33PM (Time Zone: JST). </br>
+Powered by <a href="https://github.com/szl2/jemdoc-new-design" target="blank">jemdoc + new design</a>.
+</div> <!-- <div id="footer-text"> -->
+</div> <!-- <div id="footer"> -->
+</div> <!-- <div id="footer-container"> -->
+</div> <!-- <div id="layout-content-container"> -->
+</div> <!--- <div id="layout"> --->
+</div> <!--- <div id="main-container"> --->
+<script>
+function openNav() {
+    if (window.innerWidth <= 1200) {
+        document.getElementById("layout-menu").style.width = "280px";
+        document.getElementById("layout-content-container").style.marginLeft = "280.8px";
+        document.getElementById("layout-content-container").style.position = "fixed";
+    }
+}
+function closeNav() {
+    if (window.innerWidth <= 1200) {
+        document.getElementById("layout-menu").style.width = "0";
+        document.getElementById("layout-content-container").style.position = "static";
+        document.getElementById("layout-content-container").style.marginLeft = "0px";
+        setInterval(
+            function(){ location.reload() },
+            500
+        );
+    }
+}
+</script>
+</body>
+</html>
